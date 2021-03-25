@@ -2,27 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MailSender;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class MailController extends Controller
 {
+    public function index()
+    {
+        return view('mail');
+    }
+
     public function store(Request $request)
     {
-        $request->validate([
-            'email' => 'required',
-            'content' => 'required',
-            'subject' => 'required'
-        ]);
-
-        $newEntry = new Mail;
-        $newEntry->email = $request->email;
-        $newEntry->subject_id = $request->subject_id;
-        $newEntry->content = $request->content;
-        $newEntry->save();
-
-        // Envoi Mail
-        // FacadesMail::to('navez.martin@gmail.com')->send(new SendEmail($request));
-
+        Mail::to('bryan.castillo24@hotmail.com')->send(new MailSender($request));
         return redirect()->back();
     }
 }
